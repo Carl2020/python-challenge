@@ -17,9 +17,13 @@ with open(csvpath, 'r', newline='') as csvfile:
     # define the header of the csv file just opened and read and skip it when analysis begins
     csv_header = next(csv_reader)
 
-    # loop through entire file to count total votes, and votes per candidate
+    # loop through entire file to determine candidate names and add to candidate list
+
+  
+     # loop through entire file to count total votes, and votes per candidate
     for row in csv_reader:
         total_votes += 1
+
         if row[2] == candidate_name[0]:
             candidate_vote[0] += 1
         elif row[2] == candidate_name[1]:
@@ -55,6 +59,25 @@ with open(csvpath, 'r', newline='') as csvfile:
     print(f"{candidate_name[3]}: {candidate_vote_percent[3]}% ({candidate_vote[3]})")
     print("-----------------------------")
     print(f"Winner: {candidate_winner}")
+# create a path to a text file in the Output folder
+
+output_path = os.path.join("..", "Output", "Election_Results.csv")
+with open(output_path, 'w', newline='') as csvfile:
+    csvwriter = csv.writer(csvfile, delimiter= ' ')
+
+    # write the report into a text file in the Output folder
+    csvwriter.writerow('Election Results')
+    csvwriter.writerow('-----------------------------')
+    csvwriter.writerow(f'Total Votes: {total_votes}')
+    csvwriter.writerow('-----------------------------')
+    csvwriter.writerow(f'{candidate_name[0]}: {candidate_vote_percent[0]}% ({candidate_vote[0]})')
+    csvwriter.writerow(f'{candidate_name[1]}: {candidate_vote_percent[1]}% ({candidate_vote[1]})')
+    csvwriter.writerow(f'{candidate_name[2]}: {candidate_vote_percent[2]}% ({candidate_vote[2]})')
+    csvwriter.writerow(f'{candidate_name[3]}: {candidate_vote_percent[3]}% ({candidate_vote[3]})')
+    csvwriter.writerow('-----------------------------')
+    csvwriter.writerow(f'Winner: {candidate_winner}')
+    csvfile.close()
+
 
 
     
