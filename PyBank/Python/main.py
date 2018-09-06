@@ -1,64 +1,97 @@
 import os
 import csv
-import pandas as pd
+
 # define and initiate some variables for counting months and financial data
-i = 0
+
 month_count = 0
 date_list = []
 profit_l_list = []
-profit_l_list_shift = []
-total_p_l = 0
-profit_l_difference = float(0)
-profit_l_difference_list = []
-i = 0
+profit_l_list_ = []
+total_p_l = float(0)
+change_value_list = []
+prior_value = float(0)
 
 # define the path to the file that contains the results of the election
+
 csvpath = os.path.join('..', 'Resources', 'budget_data.csv')
+
 # open the file as a csv file
+
 with open(csvpath, 'r', newline='') as csvfile:
+
 # read the csv file and store the contents in a variable called csvreader
+
     csv_reader = csv.reader(csvfile, delimiter=',')
+
 # define the header of the csv file just opened and read and skip it when analysis begins
+
     csv_header = next(csv_reader)
+
 # loop through the dataset to count months and add to list of dates and profit/loss values
-    for row in csv_reader:
+
+    for value in csv_reader:
         month_count += 1
-        profit_l_list.append(float(row[1]))
-        profit_l_list_shift.append(float(row[1]))
-        date_list.append(str(row[0]))
+        date_list.append(str(value[0]))
+        profit_l_list.append(float(value[1]))
 
-# Build profit/loss difference list
-for p_l_value in profit_l_list and profit_l_list_shift:
-        profit_l_difference = profit_l_list[1] - profit_l_list_shift[0]
+    # build list of profit/loss changes month-to-month
 
-        profit_l_difference_list.append(profit_l_difference)
-        
+        current_value = value[1]
+        change_value = float(current_value) - float(prior_value)
+        change_value_list.append(change_value)
+        prior_value = current_value
 
 # define function to compute average change in profit/loss between months
 
-def average(profit_l_difference_list):
-    x = len(profit_l_difference_list)
-    total = sum(profit_l_difference_list)
-    avg = total / x
+def average(change_value_list):
+    x = len(change_value_list)
+    total = sum(change_value_list) - change_value_list[0]
+    avg = total / (x - 1)
     return avg
 
-profit_l_change = average(profit_l_difference_list)
-# print report    
+# ................ RUN CALCULATIONS ..........................
+# compute the average change using the created function
+
+average_change = round(average(change_value_list), 2)
+
+# compute total profit/loss for the entire time frame under being analyzed
+
+total_p_l = round(sum(profit_l_list))
+
+# still need to match the dates with the highest and lowest profit/loss values
+
+highest_p_l = round(max(profit_l_list)) 
+lowest_p_l = round(min(profit_l_list))
+
+# print report to terminal screen   
+
 print("Financial Analysis")
 print("------------------------------")
 print(f"Total Months: {month_count}")
-total_p_l = sum(profit_l_list)
 print(f"Total: ${total_p_l}")
-print(f"Average Change: ${profit_l_change}")
-
-# to match the dates with the highest and lowest profit/loss values, we zip the lists together
-highest_p_l = max(profit_l_list) 
-lowest_p_l = min(profit_l_list)
-
+print(f"Average Change: ${average_change}")
 print(f"Greatest Increase in Profits: [date] ({highest_p_l})")
-
 print(f"Greatest Decrease in Profits: [date] ({lowest_p_l})")
 
+# create a path to a text file in the Output folder
+
+output_path = os.path.join("..", "Output", "Financial_Analysis.csv")
+with open(output_path, 'w', newline='') as csvfile:
+    csvwriter = csv.writer(csvfile, delimiter= ' ')
+
+# write the report into a text file in the Output folder
+
+    csvwriter.writerow("Financial Analysis")
+    csvwriter.writerow('-----------------------------')
+    csvwriter.writerow(f"Total Months: {month_count}")
+    csvwriter.writerow(f"Total: ${total_p_l}")
+    csvwriter.writerow(f"Average Change: ${average_change}")
+    csvwriter.writerow(f"Greatest Increase in Profits: [date] ({highest_p_l})")
+    csvwriter.writerow(f"Greatest Decrease in Profits: [date] ({lowest_p_l})")
+
+# close the file written to
+
+    csvfile.close()
 
 
 
