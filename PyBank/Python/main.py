@@ -81,19 +81,18 @@ print(f"Greatest Decrease in Profits: {date_list[lowest_index]} ({lowest_p_l})")
 
 # create a path to a text file in the Output folder
 
-output_path = os.path.join("..", "Output", "Financial_Analysis.csv")
-with open(output_path, 'w', newline='') as csvfile:
-    csvwriter = csv.writer(csvfile)
+output_path = os.path.join("..", "Output", "Financial_Analysis.txt")
+with open(output_path, 'w', newline='') as text_file:
 
 # write the report into a text file in the Output folder
 
-    csvwriter.writerow("Financial Analysis")
-    csvwriter.writerow('-----------------------------')
-    csvwriter.writerow(f"Total Months: {month_count}")
-    csvwriter.writerow(f"Total: ${total_p_l}")
-    csvwriter.writerow(f"Average Change: ${average_change}")
-    csvwriter.writerow(f"Greatest Increase in Profits: {date_list[highest_index]} ({highest_p_l})")
-    csvwriter.writerow(f"Greatest Decrease in Profits: {date_list[lowest_index]} ({lowest_p_l})")
+    print("Financial Analysis", file=text_file)
+    print('-----------------------------', file=text_file)
+    print(f"Total Months: {month_count}", file=text_file)
+    print(f"Total: ${total_p_l}", file=text_file)
+    print(f"Average Change: ${average_change}", file=text_file)
+    print(f"Greatest Increase in Profits: {date_list[highest_index]} ({highest_p_l})", file=text_file)
+    print(f"Greatest Decrease in Profits: {date_list[lowest_index]} ({lowest_p_l})",file=text_file)
 
 # close the file written to
 
