@@ -40,6 +40,7 @@ with open(csvpath, 'r', newline='') as csvfile:
         change_value = float(current_value) - float(prior_value)
         change_value_list.append(change_value)
         prior_value = current_value
+        
 
 # define function to compute average change in profit/loss between months
 
@@ -58,10 +59,15 @@ average_change = round(average(change_value_list), 2)
 
 total_p_l = round(sum(profit_l_list))
 
-# still need to match the dates with the highest and lowest profit/loss values
 
-highest_p_l = round(max(profit_l_list)) 
+# match the dates with the highest and lowest profit/loss values
+
+highest_p_l = round(max(profit_l_list))
 lowest_p_l = round(min(profit_l_list))
+highest_index = profit_l_list.index(highest_p_l)
+lowest_index = profit_l_list.index(lowest_p_l)
+
+# use values list as an index to map to the right date for the highest and lowest profit values
 
 # print report to terminal screen   
 
@@ -70,14 +76,14 @@ print("------------------------------")
 print(f"Total Months: {month_count}")
 print(f"Total: ${total_p_l}")
 print(f"Average Change: ${average_change}")
-print(f"Greatest Increase in Profits: [date] ({highest_p_l})")
-print(f"Greatest Decrease in Profits: [date] ({lowest_p_l})")
+print(f"Greatest Increase in Profits: {date_list[highest_index]} ({highest_p_l})")
+print(f"Greatest Decrease in Profits: {date_list[lowest_index]} ({lowest_p_l})")
 
 # create a path to a text file in the Output folder
 
 output_path = os.path.join("..", "Output", "Financial_Analysis.csv")
 with open(output_path, 'w', newline='') as csvfile:
-    csvwriter = csv.writer(csvfile, delimiter= ' ')
+    csvwriter = csv.writer(csvfile)
 
 # write the report into a text file in the Output folder
 
@@ -86,8 +92,8 @@ with open(output_path, 'w', newline='') as csvfile:
     csvwriter.writerow(f"Total Months: {month_count}")
     csvwriter.writerow(f"Total: ${total_p_l}")
     csvwriter.writerow(f"Average Change: ${average_change}")
-    csvwriter.writerow(f"Greatest Increase in Profits: [date] ({highest_p_l})")
-    csvwriter.writerow(f"Greatest Decrease in Profits: [date] ({lowest_p_l})")
+    csvwriter.writerow(f"Greatest Increase in Profits: {date_list[highest_index]} ({highest_p_l})")
+    csvwriter.writerow(f"Greatest Decrease in Profits: {date_list[lowest_index]} ({lowest_p_l})")
 
 # close the file written to
 
