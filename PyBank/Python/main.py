@@ -6,7 +6,6 @@ import csv
 month_count = 0
 date_list = []
 profit_l_list = []
-profit_l_list_ = []
 total_p_l = float(0)
 change_value_list = []
 prior_value = float(0)
