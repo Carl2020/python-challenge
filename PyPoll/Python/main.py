@@ -9,9 +9,11 @@ total_votes = 0
 
 # list the names of the candidates up for election
 
-candidate_name = ["Khan", "Correy", "Li", "O'Tooley"]
+candidate_list = []
 
-# set the vote counter and vote percentage for the 4 candidates to zero
+candidate_name = []
+
+# set the vote counter and vote percentage for 4 candidates to zero
 
 candidate_vote = [0, 0, 0, 0]
 candidate_vote_percent = [0, 0, 0, 0]
@@ -32,11 +34,14 @@ with open(csvpath, 'r', newline='') as csvfile:
 
     csv_header = next(csv_reader)
 
-     # loop through entire file to count total votes, and votes per candidate
+     # loop through entire file to count total votes, add names to the candidate_name list, and votes per candidate
 
     for row in csv_reader:
         total_votes += 1
-
+        candidate_list.append(str(row[2]))
+    for row[2] in candidate_list:
+        if row[2] not in candidate_name:
+            candidate_name.append(row[2])
         if row[2] == candidate_name[0]:
             candidate_vote[0] += 1
         elif row[2] == candidate_name[1]:
